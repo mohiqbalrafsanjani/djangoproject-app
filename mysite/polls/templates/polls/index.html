@@ -4,7 +4,8 @@
 <head>
     <title>index</title>
 </head>
-
+{% load static %}
+<link rel="stylesheet" href="{% static 'polls/style.css' %}">
 <body>
     {% if latest_question_list %}
     <ul>
