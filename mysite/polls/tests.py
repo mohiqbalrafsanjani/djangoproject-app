@@ -50,9 +50,9 @@ class QuestionIndexViewTests(TestCase):
         """
 
         response = self.client.get(reverse('polls:index'))
-        self.assertEqueal(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response,"No polls are available.")
-        self.assertQuerysetEqual(response.content['latest_question_list'],[])
+        self.assertQuerysetEqual(response.context['latest_question_list'],[])
 
     def test_past_question(self):
         """
@@ -61,7 +61,7 @@ class QuestionIndexViewTests(TestCase):
         question = create_question(question_text="Past question.", days=-30)
         response = self.client.get(reverse('polls:index'))
         self.assertQuerysetEqual(
-            response.content['latest_question_list'],
+            response.context['latest_question_list'],
             [question],
         )
 
@@ -80,7 +80,7 @@ class QuestionIndexViewTests(TestCase):
         even if both past and future questions exist, only past questions are displayed.
         """
 
-        question = create_question(question_test="Past question.", days=-30)
+        question = create_question(question_text="Past question.", days=-30)
         create_question(question_text="Future question.", days=30)
         response = self.client.get(reverse('polls:index'))
         self.assertQuerysetEqual(
